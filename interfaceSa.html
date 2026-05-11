@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TSEA – Soldagem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --tsea-red:       #7B1025;
+      --tsea-dark:      #3B1018;
+      --sidebar-bg:     #C8C8C8;
+      --sidebar-active: #9E9E9E;
+      --content-bg:     #D4D4D4;
+      --card-bg:        #C4C4C4;
+      --card-border:    #A0A0A0;
+      --header-bg:      #E0E0E0;
+      --top-border:     #7B1025;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: #B0B0B0;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    /* ── outer shell ── */
+    .shell {
+      width: 100%;
+      max-width: 1340px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-left: 3px solid var(--top-border);
+      border-right: 3px solid var(--top-border);
+      background: var(--content-bg);
+    }
+
+    /* ── top red accent bar ── */
+    .top-bar { height: 4px; background: var(--tsea-red); }
+
+    /* ── header row ── */
+    .header {
+      display: grid;
+      grid-template-columns: 272px 1fr;
+      background: var(--header-bg);
+      border-bottom: 2px solid var(--tsea-red);
+    }
+    .logo-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 24px;
+      border-right: 2px solid var(--tsea-red);
+    }
+    .logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--tsea-red);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .title-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 40px;
+    }
+    .page-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--tsea-red);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── sub-header ── */
+    .sub-header-inner {
+      border-left: 2px solid #aaa;
+      padding: 12px 40px;
+      text-align: center;
+    }
+    .sub-header-text {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #2a2a2a;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── body row ── */
+    .body {
+      display: grid;
+      grid-template-columns: 272px 1fr;
+      flex: 1;
+    }
+
+    /* ── sidebar ── */
+    .sidebar {
+      background: var(--sidebar-bg);
+      border-right: 2px solid #aaa;
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-item {
+      padding: 18px 20px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #2a2a2a;
+      border-bottom: 2px solid #aaa;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      letter-spacing: 0.01em;
+      user-select: none;
+    }
+    .nav-item:hover  { background: #b5b5b5; }
+    .nav-item.active { background: var(--sidebar-active); color: #1a1a1a; }
+
+    /* ── main content area ── */
+    .content {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-height: 500px;
+    }
+
+    /* ── version card ── */
+    .version-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 6px;
+      padding: 22px 28px;
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .version-card:hover {
+      background: #b8b8b8;
+      border-color: var(--tsea-red);
+      transform: translateX(3px);
+    }
+    .version-card.selected {
+      border-color: var(--tsea-red);
+      background: #bcbcbc;
+    }
+    .version-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: #2a2a2a;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── shimmer skeleton ── */
+    .skeleton {
+      background: linear-gradient(90deg, #c4c4c4 25%, #d4d4d4 50%, #c4c4c4 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      height: 1.3rem;
+      width: 60%;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── loading / empty / error states ── */
+    .state-loading, .state-empty, .state-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 48px 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid #aaa;
+      border-top-color: var(--tsea-red);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── info cliente grid ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .info-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .info-field label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .info-value {
+      background: #bababa;
+      border: 1.5px solid #999;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      min-height: 36px;
+    }
+
+    /* ── panel heading ── */
+    .panel-heading {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--tsea-red);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--tsea-red);
+      padding-bottom: 6px;
+      margin-bottom: 4px;
+    }
+
+    /* ── badge ── */
+    .badge {
+      display: inline-block;
+      background: var(--tsea-red);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 2px 9px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 640px) {
+      .header { grid-template-columns: 1fr; }
+      .logo-cell { border-right: none; border-bottom: 2px solid var(--tsea-red); }
+      .sub-header-inner { margin-left: 0; border-left: none; }
+      .body { grid-template-columns: 1fr; }
+      .sidebar { flex-direction: row; border-right: none; border-bottom: 2px solid #aaa; }
+      .nav-item { border-bottom: none; border-right: 2px solid #aaa; flex: 1; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="top-bar"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-cell">
+      <span class="logo-text">TSEA</span>
+    </div>
+    <div class="title-cell">
+      <span class="page-title">Soldagem</span>
+    </div>
+  </div>
+
+  <!-- SUB-HEADER -->
+  <div class="flex" style="background:#D8D8D8; border-bottom:2px solid #aaa;">
+    <div style="width:272px; min-width:272px; border-right:2px solid #aaa;"></div>
+    <div class="sub-header-inner flex-1">
+      <span class="sub-header-text" id="subHeaderText">Carregando…</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body flex-1">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="nav-item active" data-panel="versoes" id="nav-versoes">Versão</div>
+      <div class="nav-item"        data-panel="cliente" id="nav-cliente">Info. Cliente</div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="content" id="mainContent">
+      <!-- preenchido pelo app.js -->
+    </main>
+
+  </div>
+</div>
+
+<script src="js/interfaceSa.js"></script>
+</body>
+</html>
