@@ -1,6 +1,7 @@
 from io import BytesIO
 
 import pytest
+import validators
 from selenium import webdriver
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -8,7 +9,7 @@ from selenium.webdriver.ie.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Teste de interface !!
+# Teste E2E !!
 
 @pytest.fixture()
 def chrome():
@@ -16,27 +17,37 @@ def chrome():
     chrome = webdriver.Chrome(service=service)
     chrome.get('http://127.0.0.1:5500/interfaceSa.html')
 
-    chrome.implicitly_wait(4)
+    chrome.implicitly_wait(10)
     yield chrome
     chrome.quit()
 
 
+
 @pytest.mark.usefixtures("chrome")
-def test_displayed_itens(chrome):
+def test_click_redirect_itens(chrome):
+    #verifica se os itens estao na tela
     chrome.find_element(By.CLASS_NAME, "version-card").is_displayed()
     chrome.find_element(By.ID, "nav-versoes").is_displayed()
     chrome.find_element(By.ID, "nav-cliente").is_displayed()
 
-@pytest.mark.usefixtures("chrome")
-def test_click_redirect_itens(chrome):
+    #clica no elemento
     chrome.find_element(By.CLASS_NAME, "version-card").click()
-    # nav_ver = chrome.find_element(By.ID, "nav-versoes").is_displayed()
-    # nav_cli = chrome.find_element(By.ID, "nav-cliente").is_displayed()
 
-    wait = WebDriverWait(chrome, 5)
+    #verifica se redirecionou
+    wait = WebDriverWait(chrome, 10)
     wait.until(lambda _ : chrome.find_element(By.CLASS_NAME, "version-label").is_displayed())
 
-    wait.until(lambda _ : chrome.find_element(By.XPATH(" //*[@id="mainContent"]/div[2]/img")).is_displayed()
+    #clica
+    chrome.find_element(By.CLASS_NAME, "version-card").click()
+
+    #verifica se redirecionou
+    wait.until(lambda _: chrome.find_element(By.ID, "imgURLDoc").is_displayed())
+
+    chrome.find_element(By.CLASS_NAME, "info-value").click()
+    url = "https://xuhzmpkxbbcigdmwmzzl.supabase.co/storage/v1/object/public/docs/ChatGPT%20Image%2011_05_2026,%2010_33_18.png"
+    assert validators.url(url) == True
+
+
 
 
 

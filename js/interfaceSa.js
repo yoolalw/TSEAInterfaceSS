@@ -130,9 +130,10 @@ function mostrarImagemPeca(peca) {
     </div>
 
     <div style="display:flex; justify-content:center;">
-      <img 
+      <img
         src="${peca.urlDoc}" 
         alt="${peca.nomePeca}"
+        id="imgURLDoc"
         style="
           width:100%;
           max-width:700px;
@@ -145,21 +146,12 @@ function mostrarImagemPeca(peca) {
 
     <div style="margin-top:20px;">
       <div class="info-grid">
-
+      <a href="${peca.urlDoc}"
         <div class="info-field">
-          <label>ID</label>
-          <div class="info-value">${peca.idPeca}</div>
+          <div class="info-value">CLIQUE AQUI PARA DAR ZOOM</div>
         </div>
+        </a>
 
-        <div class="info-field">
-          <label>Versão</label>
-          <div class="info-value">${peca.versao}</div>
-        </div>
-
-        <div class="info-field">
-          <label>Data</label>
-          <div class="info-value">${formatarData(peca.dataCriacao)}</div>
-        </div>
 
       </div>
     </div>
