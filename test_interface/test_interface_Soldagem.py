@@ -1,4 +1,5 @@
 from io import BytesIO
+from selenium.webdriver.support import expected_conditions as EC
 
 import pytest
 import validators
@@ -9,7 +10,8 @@ from selenium.webdriver.ie.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Teste E2E !!
+
+# Teste E2E + Interface!!
 
 @pytest.fixture()
 def chrome():
@@ -22,25 +24,24 @@ def chrome():
     chrome.quit()
 
 
-
 @pytest.mark.usefixtures("chrome")
 def test_click_redirect_itens(chrome):
-    #verifica se os itens estao na tela
+    # verifica se os itens estao na tela
     chrome.find_element(By.CLASS_NAME, "version-card").is_displayed()
     chrome.find_element(By.ID, "nav-versoes").is_displayed()
     chrome.find_element(By.ID, "nav-cliente").is_displayed()
 
-    #clica no elemento
+    # clica no elemento
     chrome.find_element(By.CLASS_NAME, "version-card").click()
 
-    #verifica se redirecionou
+    # verifica se redirecionou
     wait = WebDriverWait(chrome, 10)
-    wait.until(lambda _ : chrome.find_element(By.CLASS_NAME, "version-label").is_displayed())
+    wait.until(lambda _: chrome.find_element(By.CLASS_NAME, "version-label").is_displayed())
 
-    #clica
+    # clica
     chrome.find_element(By.CLASS_NAME, "version-card").click()
 
-    #verifica se redirecionou
+    # verifica se redirecionou
     wait.until(lambda _: chrome.find_element(By.ID, "imgURLDoc").is_displayed())
 
     chrome.find_element(By.CLASS_NAME, "info-value").click()
@@ -48,7 +49,23 @@ def test_click_redirect_itens(chrome):
     assert validators.url(url) == True
 
 
+@pytest.mark.usefixtures("chrome")
+def test_click_info_client(chrome):
+    verCard = chrome.find_element(By.CLASS_NAME, "version-card")
 
+    verCard.click()
 
+    # verifica se redirecionou
+    wait = WebDriverWait(chrome, 10)
+
+    navCliente = chrome.find_element(By.ID, "nav-cliente")
+    navCliente.click()
+
+    WebDriverWait(chrome, 10).until(
+        EC.text_to_be_present_in_element((By.ID, "clienteNome"), "cliente1")
+    )
+    WebDriverWait(chrome, 10).until(
+        EC.text_to_be_present_in_element((By.ID, "clienteObservacao"), "Cuidadoso com detalhes")
+    )
 
 

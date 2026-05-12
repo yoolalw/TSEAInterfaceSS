@@ -150,7 +150,7 @@ function mostrarImagemPeca(peca) {
         <div class="info-field">
           <div class="info-value">CLIQUE AQUI PARA DAR ZOOM</div>
         </div>
-        </a>
+      </a>
 
 
       </div>
@@ -198,35 +198,35 @@ function carregarInfoCliente() {
 
       <div class="info-field">
         <label>Nome</label>
-        <div class="info-value">
+        <div class="info-value" id="clienteNome">
           ${cliente.nomeCliente || "-"}
         </div>
       </div>
 
       <div class="info-field">
         <label>CNPJ</label>
-        <div class="info-value">
+        <div class="info-value" id="clienteCNPJ">
           ${cliente.cnpjCliente || "-"}
         </div>
       </div>
 
       <div class="info-field">
         <label>Email</label>
-        <div class="info-value">
+        <div class="info-value" id="clienteEmail">
           ${cliente.emailCliente || "-"}
         </div>
       </div>
 
       <div class="info-field">
         <label>Telefone</label>
-        <div class="info-value">
+        <div class="info-value" id="clienteTelefone">
           ${cliente.telefoneCliente || "-"}
         </div>
       </div>
 
       <div class="info-field" style="grid-column:1/-1;">
         <label>Observações</label>
-        <div class="info-value">
+        <div class="info-value" id="clienteObservacao">
           ${cliente.observacaoCliente || "-"}
         </div>
       </div>
